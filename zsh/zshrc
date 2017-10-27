@@ -1,5 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/joshmin/.oh-my-zsh
@@ -92,7 +95,7 @@ export EDITOR='emacsclient -t -c -a "emacs -nw"'
 ###########################
 
 eval $(thefuck --alias fuck)
-alias neofetch='neofetch --w3m ~/Documents/neofetch.jpg --underline on --underline_char ❄'
+#alias neofetch='neofetch --w3m ~/Documents/neofetch.jpg --underline on --underline_char ❄'
 alias browser='cd ~/Downloads/firefox && ./firefox-bin'
 ###########################
 #       AUTOSTART         #

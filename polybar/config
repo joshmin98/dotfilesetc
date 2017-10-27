@@ -5,7 +5,7 @@ offset-x = 0
 offset-y = -1 
 bottom = true
 
-background=${xrdb:color0}
+background=${xrdb:background}
 foreground = ${xrdb:color15}
 
 underline-size = 4

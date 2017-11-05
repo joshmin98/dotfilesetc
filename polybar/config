@@ -24,9 +24,7 @@ font-3 = Inconsolata for Powerline:pixelsize=8
 
 modules-left = i3
 modules-center = xwindow
-modules-right = volume battery wireless-network date
-scroll-up = bspwm-desknext
-scroll-down = bspwm-deskprev
+modules-right = volume battery date
 
 ; MODULES
 

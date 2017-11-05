@@ -1,10 +1,8 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
-lways
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -84,11 +82,9 @@ lways
   :ensure t)
 
 (use-package company-irony
-  :ensure t
-  :config
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony)
-    ))
+  :ensure t)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
 (use-package projectile
   :ensure t
   :config
@@ -144,6 +140,8 @@ lways
 (use-package magit
   :ensure t)
 
+(use-package nlinum
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;
 ;;ANDROID STUFF;;
@@ -161,7 +159,7 @@ lways
  '(neo-theme (quote arrow))
  '(package-selected-packages
    (quote
-    (racer rust-mode flymake-cursor-mode vue-mode emmet-mode rjsx-mode pdf-tools try use-package))))
+    (evil skewer-mode simple-httpd company-tern js2-mode ox-twbs org-bullets racer rust-mode flymake-cursor-mode vue-mode emmet-mode rjsx-mode pdf-tools try use-package))))
 
 
 ;;;;;;;;;;;;;;;;;;
@@ -247,6 +245,13 @@ lways
 (setq company-tooltip-align-annotations t)
 
 
+;;;;;;;;;;;;;;;;;;;;
+;;   Evil Mode    ;;
+;;;;;;;;;;;;;;;;;;;;
+(use-package evil
+  :ensure t
+  :config
+(evil-mode 1))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

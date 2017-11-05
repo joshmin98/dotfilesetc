@@ -97,12 +97,6 @@ export EDITOR='emacsclient -t -c -a "emacs -nw"'
 eval $(thefuck --alias fuck)
 #alias neofetch='neofetch --w3m ~/Documents/neofetch.jpg --underline on --underline_char ❄'
 alias browser='cd ~/Downloads/firefox && ./firefox-bin'
-alias clear='clear && neofetch --disable gpu'
-alias skype='flatpak run com.skype.Client'
-alias spotify='flatpak run com.spotify.Client'
-
 ###########################
 #       AUTOSTART         #
 ###########################
-
-neofetch --disable gpu

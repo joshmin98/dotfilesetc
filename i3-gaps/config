@@ -150,8 +150,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $bg-color 	         #3f3f3f
-set $inactive-bg-color   #3f3f3f
+set $bg-color 	         #3a3a3a
+set $inactive-bg-color   #3a3a3a
 set $text-color          #ffffff
 set $inactive-text-color #818181
 set $urgent-bg-color     #E53935
@@ -161,10 +161,10 @@ bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 465 -opaci
 
 # window colors
 #                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          #444444
-client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #444444
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #444444
-client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #444444
+client.focused          $bg-color           $bg-color          $text-color          #3f3f3f
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #3f3f3f
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #3f3f3f
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #3f3f3f
 
 #window borders and stuff
 hide_edge_borders both

@@ -1,8 +1,6 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -84,11 +82,9 @@
   :ensure t)
 
 (use-package company-irony
-  :ensure t
-  :config
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony)
-    ))
+  :ensure t)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
 (use-package projectile
   :ensure t
   :config
@@ -144,25 +140,11 @@
 (use-package magit
   :ensure t)
 
-
-;;;;;;;;;;;;;;;;;
-;;ANDROID STUFF;;
-;;;;;;;;;;;;;;;;;
-(use-package android-mode
+(use-package nlinum
   :ensure t)
-(require 'android-mode)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(android-mode-sdk-dir "~/Documents/android")
- '(neo-smart-open t)
- '(neo-theme (quote arrow))
- '(package-selected-packages
-   (quote
-    (racer rust-mode flymake-cursor-mode vue-mode emmet-mode rjsx-mode pdf-tools try use-package))))
-
+(setq nlinum-format "%d| ")
+(setq nlinum-highlight-current-line t)
+(global-nlinum-mode t)
 
 ;;;;;;;;;;;;;;;;;;
 ;;Org Mode Stuff;;
@@ -247,9 +229,25 @@
 (setq company-tooltip-align-annotations t)
 
 
+;;;;;;;;;;;;;;;;;;;;
+;;   Evil Mode    ;;
+;;;;;;;;;;;;;;;;;;;;
+(use-package evil
+  :ensure t
+  :config
+(evil-mode 1))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flymake-cursor-mode zenburn-theme yasnippet which-key vue-mode use-package tablist skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style evil emmet-mode counsel company-tern company-irony company-c-headers android-mode))))

@@ -1,18 +1,26 @@
+Xft.autohint: 1
+Xft.antialias: 1
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+
 rofi.color-enabled: true
 rofi.color-window: #444444, #818181, #444444
 rofi.color-normal: #444444, #818181, #444444, #444444, #ffffff
 rofi.color-active: #444444, #818181, #444444, #444444, #ffffff
 rofi.color-urgent: #444444, #818181, #444444, #444444, #ffffff
 
-URxvt.font: xft:Inconsolata for Powerline: size=11
+URxvt*termName: rxvt-unicode
+URxvt.font: xft:Liberation Mono for Powerline: size=10
 URxvt.scrollBar: false
 URxvt.intensityStyles: false
 *background: #3a3a3a
-*foreground: white
+*foreground: #efefef
 URxvt.keysym.Control-V: perl:clipboard:paste
 URxvt.iso14755: False
 URxvt.perl-ext-common: default,clipboard
-
+*locale: true
 
 URxvt*colorUL: #c5f779
 URxvt*underlineColor: #c5f779
@@ -47,4 +55,4 @@ URxvt*underlineColor: #c5f779
 
 ! bright-cyan + bright-white
 *color14                 :#93e0e3
-*color15                 :#ffffff
+*color15                 :#efefef

@@ -236,8 +236,6 @@
   :ensure t
   :config
 (evil-mode 1))
-(use-package evil-tutor
-  :ensure t)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

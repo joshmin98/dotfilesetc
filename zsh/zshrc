@@ -95,7 +95,7 @@ export EDITOR='emacsclient -t -c -a "emacs -nw"'
 ###########################
 
 eval $(thefuck --alias fuck)
-#alias neofetch='neofetch --w3m ~/Documents/neofetch.jpg --underline on --underline_char ❄'
+alias neofetch='neofetch --w3m ~/Documents/neofetch.jpg --underline on --underline_char ❄ --disable gpu'
 alias browser='cd ~/Downloads/firefox && ./firefox-bin'
 alias clear='clear && neofetch --disable gpu'
 alias skype='flatpak run com.skype.Client'

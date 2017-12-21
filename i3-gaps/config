@@ -176,6 +176,7 @@ new_window 1pixel
 exec compton -f -c -D 5 -i 0.85 -r 15
 exec_always feh --bg-scale ~/Documents/Wallpaper.png
 exec polybar top
+exec xset r rate 150 25
 
 #Custom Keybinds   
 bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-5%'
@@ -186,4 +187,4 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 bindsym $mod+Shift+f exec urxvt -e "ranger"
-bindsym $mod+Shift+b exec ~/Downloads/firefox/firefox-bin
+bindsym $mod+Shift+b exec firefox 

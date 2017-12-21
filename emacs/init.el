@@ -130,12 +130,8 @@
 
 (use-package powerline
   :ensure t
-  :config (powerline-default-theme))
-
-(use-package intero
-  :ensure t
   :config
-  (add-hook 'haskell-mode-hook 'intero-mode))
+  (powerline-default-theme))
 
 (use-package magit
   :ensure t)
@@ -145,6 +141,14 @@
 (setq nlinum-format "%d| ")
 (setq nlinum-highlight-current-line t)
 (global-nlinum-mode t)
+
+(use-package glsl-mode
+  :ensure t)
+(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
+
 
 ;;;;;;;;;;;;;;;;;;
 ;;Org Mode Stuff;;
@@ -222,12 +226,25 @@
 (use-package racer
   :ensure t)
 
+(use-package flymake-easy
+  :ensure t)
+(use-package flymake-rust
+  :ensure t)
+
+(add-hook 'rust-mode-hook 'flymake-rust-load)
+
+(setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
+(setq racer-cmd "~/.cargo/bin/racer")
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)
+
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 (setq company-tooltip-align-annotations t)
 
+(add-hook 'rust-mode-hook
+	  (lambda()
+	    (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;;   Evil Mode    ;;
@@ -252,4 +269,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flymake-cursor-mode zenburn-theme yasnippet which-key vue-mode use-package tablist skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style evil emmet-mode counsel company-tern company-irony company-c-headers android-mode))))
+    (glsl-mode flymake-rust flycheck-rust flymake-cursor-mode zenburn-theme yasnippet which-key vue-mode use-package tablist skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style evil emmet-mode counsel company-tern company-irony company-c-headers android-mode))))

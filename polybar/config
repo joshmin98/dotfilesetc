@@ -24,7 +24,7 @@ font-3 = Inconsolata for Powerline:pixelsize=8
 
 modules-left = i3
 modules-center = xwindow
-modules-right = volume battery date
+modules-right = battery date
 
 ; MODULES
 
@@ -44,50 +44,16 @@ label-focused-underline=${xrdb:color8}
 label-focused-padding=4
 label-unfocused-padding=4
 
-[module/wireless-network]
-type=internal/network
-interface=wlan0
-format-connected = <label-connected>
-label-connected =  %essid%
-label-disconnected = No Wi-Fi
-label-connected-padding=1
 
-[module/spotify]
-type=custom/script
-interval=1
-exec-if=pgrep -i spotify
-exec=spotify-now -i "%title - %artist" -e "Loading..." -p ""
-click-left=spotify-control play
-label="%output:0:32:...%"
-label-padding=2
-label-font=3
-format-prefix=""
-[module/bspwm]
-type = internal/bspwm
+[module/wlan]
+type = internal/network
+interface = wlo1
+interval = 3.0
 
-ws-icon-0 = web;
-ws-icon-1 = term;
-ws-icon-2 = chat;
-ws-icon-3 = code;
-ws-icon-4 = music;
-ws-icon-default = 
-
-format = <label-state> <label-mode>
-
-label-focused = %icon%
-label-focused-background = #88000000
-label-focused-underline= #ddd
-label-focused-padding = 4
-
-label-occupied = %icon%
-label-occupied-padding = 4
-
-label-urgent = %icon%
-label-urgent-padding = 4
-
-label-empty = %icon%
-label-empty-foreground = #44ffffff
-label-empty-padding = 4
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+label-disconnected =  WLan d/c
+ramp-signal-0 = 
 
 [module/xwindow]
 type = internal/xwindow

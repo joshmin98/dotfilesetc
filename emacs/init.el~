@@ -130,37 +130,22 @@
 
 (use-package powerline
   :ensure t
-  :config (powerline-default-theme))
-
-(use-package intero
-  :ensure t
   :config
-  (add-hook 'haskell-mode-hook 'intero-mode))
+  (powerline-default-theme))
 
 (use-package magit
   :ensure t)
 
 (use-package nlinum
   :ensure t)
+(setq nlinum-format "%d| ")
+(setq nlinum-highlight-current-line t)
+(global-nlinum-mode t)
 
-;;;;;;;;;;;;;;;;;
-;;ANDROID STUFF;;
-;;;;;;;;;;;;;;;;;
-(use-package android-mode
+(use-package glsl-mode
   :ensure t)
-(require 'android-mode)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(android-mode-sdk-dir "~/Documents/android")
- '(neo-smart-open t)
- '(neo-theme (quote arrow))
- '(package-selected-packages
-   (quote
-    (evil skewer-mode simple-httpd company-tern js2-mode ox-twbs org-bullets racer rust-mode flymake-cursor-mode vue-mode emmet-mode rjsx-mode pdf-tools try use-package))))
-
+(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
 
 ;;;;;;;;;;;;;;;;;;
 ;;Org Mode Stuff;;
@@ -238,12 +223,25 @@
 (use-package racer
   :ensure t)
 
+(use-package flymake-easy
+  :ensure t)
+(use-package flymake-rust
+  :ensure t)
+
+(add-hook 'rust-mode-hook 'flymake-rust-load)
+
+(setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
+(setq racer-cmd "~/.cargo/bin/racer")
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)
+
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 (setq company-tooltip-align-annotations t)
 
+(add-hook 'rust-mode-hook
+	  (lambda()
+	    (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;;   Evil Mode    ;;
@@ -252,9 +250,20 @@
   :ensure t
   :config
 (evil-mode 1))
+(use-package evil-tutor
+  :ensure t)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flymake-rust flycheck-rust flymake-cursor-mode zenburn-theme yasnippet which-key vue-mode use-package tablist skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style evil emmet-mode counsel company-tern company-irony company-c-headers android-mode))))

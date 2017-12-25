@@ -95,9 +95,7 @@
 
   (use-package iedit
     :ensure t)
-
-  (use-package flymake-cursor-mode
-    :ensure t)
+  (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
   (use-package yasnippet
     :ensure t

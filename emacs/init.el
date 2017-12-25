@@ -13,7 +13,7 @@
 (require 'bind-key)
 
 ;;packages
-(org-babel-load-file (expand-file-name "./myInit.org"))
+(org-babel-load-file (expand-file-name "./joshminit.org"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

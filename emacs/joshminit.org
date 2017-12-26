@@ -4,6 +4,8 @@
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
+
+  (global-set-key (kbd "<backtab>") 'forward-char)
 #+END_SRC
 * General Interface Extensions
 #+BEGIN_SRC emacs-lisp
@@ -75,6 +77,10 @@
     (progn
       (global-set-key [f8] 'neotree-toggle)))
 
+  (use-package smartparens
+    :ensure t
+    :config
+    (smartparens-global-mode 1))
 #+END_SRC
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp

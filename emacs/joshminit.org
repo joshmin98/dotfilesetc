@@ -3,6 +3,7 @@
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 * General Interface Extensions
 #+BEGIN_SRC emacs-lisp
@@ -143,6 +144,14 @@ Auto-completion
     '(add-to-list
       'company-backends '(company-irony-c-headers company-irony)))
 #+END_SRC
+
+Syntax Checking
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t)
+  (add-hook 'c-mode-hook 'flycheck-mode)
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+#+END_SRC
 * Org Mode Stuff
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -189,6 +198,7 @@ Auto-completion
     :ensure t)
 #+END_SRC
 * Evil Mode
+Evil Mode
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :ensure t

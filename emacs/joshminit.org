@@ -71,12 +71,6 @@
   (setq nlinum-highlight-current-line t)
   (global-nlinum-mode t)
 
-  (use-package neotree
-    :ensure t
-    :config
-    (progn
-      (global-set-key [f8] 'neotree-toggle)))
-
   (use-package smartparens
     :ensure t
     :config
@@ -84,6 +78,7 @@
 #+END_SRC
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (require 'cc-mode)
   (require 'semantic)
   (global-semanticdb-minor-mode 1)
@@ -95,11 +90,6 @@
   (add-hook 'c-mode-common-hook 'google-set-c-style)
   (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
-  (use-package projectile
-    :ensure t
-    :config
-    (projectile-global-mode))
-
   (use-package iedit
     :ensure t)
   (define-key global-map (kbd "C-c ;") 'iedit-mode)
@@ -108,6 +98,15 @@
     :ensure t
     :config
     (yas-global-mode 1))
+
+  (use-package rtags
+    :ensure t)
+
+  (use-package ivy-rtags
+    :ensure t)
+  (setq rtags-display-result-backend 'ivy)
+
+  (global-set-key (kbd "C-c M-d") 'ggtags-find-definition)
 
   (use-package glsl-mode
     :ensure t)
@@ -149,6 +148,15 @@ Auto-completion
   (eval-after-load 'company
     '(add-to-list
       'company-backends '(company-irony-c-headers company-irony)))
+
+  (use-package company-rtags
+    :ensure t)
+  (setq rtags-completions-enabled t)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends 'company-rtags))
+  (setq rtags-autostart-diagnostics t)
+  (rtags-enable-standard-keybindings)
 #+END_SRC
 
 Syntax Checking
@@ -157,6 +165,26 @@ Syntax Checking
     :ensure t)
   (add-hook 'c-mode-hook 'flycheck-mode)
   (add-hook 'c++-mode-hook 'flycheck-mode)
+
+  (use-package flycheck-rtags
+    :ensure t)
+  (defun my-flycheck-rtags-setup ()
+    (flycheck-select-checker 'rtags)
+    (setq-local flycheck-highlighting-mode nil)
+    (setq-local flycheck-check-syntax-automatically nil))
+  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+
+  (use-package flycheck-irony
+    :ensure t)
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+END_SRC
+
+CMake IDE
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-ide
+    :ensure t)
+  (cmake-ide-setup)
 #+END_SRC
 * Org Mode Stuff
 #+BEGIN_SRC emacs-lisp

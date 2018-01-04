@@ -101,6 +101,8 @@
 
   (use-package rtags
     :ensure t)
+  (setq rtags-autostart-diagnostics t)
+  (rtags-enable-standard-keybindings)
 
   (use-package ivy-rtags
     :ensure t)
@@ -114,6 +116,9 @@
   (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
   (add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
   (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
+
+  (use-package cmake-mode
+    :ensure t)
 #+END_SRC
 
 Auto-completion
@@ -135,28 +140,35 @@ Auto-completion
       (add-hook 'c++-mode-hook 'irony-mode)
       (add-hook 'c-mode-hook 'irony-mode)
       ))
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-aasync))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
   (use-package company-irony
     :ensure t)
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (setq company-idle-delay 0)
 
   (use-package company-irony-c-headers
     :ensure t)
   (eval-after-load 'company
     '(add-to-list
-      'company-backends '(company-irony-c-headers company-irony)))
+      'company-backends '(company-irony-c-headers company-irony company-clang)))
 
-  (use-package company-rtags
-    :ensure t)
-  (setq rtags-completions-enabled t)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-rtags))
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
+  (use-package company-glsl
+    :ensure t
+    :config
+    (when (executable-find "glslangValidator")
+      (add-to-list 'company-backends 'company-glsl)))
+
+  (setq-default company-idle-delay 0)
+  (setq-default company-minimum-prefix-length 1)
+  (setq-default company-tooltip-align-annotations t)
+  (global-company-mode 1)
+
 #+END_SRC
 
 Syntax Checking
@@ -169,15 +181,13 @@ Syntax Checking
   (use-package flycheck-rtags
     :ensure t)
   (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil)
-    (setq-local flycheck-check-syntax-automatically nil))
+    (flycheck-select-checker 'rtags))
   (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
 
-  (use-package flycheck-irony
+  (use-package clang-format
     :ensure t)
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (global-set-key (kbd "C-c i") 'clang-format-buffer)
+  (setq clang-format-style-option "Google")
 #+END_SRC
 
 CMake IDE
@@ -185,6 +195,7 @@ CMake IDE
   (use-package cmake-ide
     :ensure t)
   (cmake-ide-setup)
+  (global-set-key (kbd "C-c b") 'cmake-ide-compile)
 #+END_SRC
 * Org Mode Stuff
 #+BEGIN_SRC emacs-lisp

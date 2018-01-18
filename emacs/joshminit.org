@@ -67,9 +67,14 @@
 
   (use-package nlinum
     :ensure t)
-  (setq nlinum-format "%d| ")
+  (setq nlinum-format "%3d\u2595  ")
   (setq nlinum-highlight-current-line t)
   (global-nlinum-mode t)
+
+  (use-package nlinum-hl
+    :ensure t)
+  (require 'nlinum-hl)
+  (add-hook 'post-gc-hook #'nlinum-hl-flush-all-windows)
 
   (use-package smartparens
     :ensure t

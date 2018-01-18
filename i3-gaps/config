@@ -9,8 +9,8 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-gaps inner 12
-gaps outer 15
+gaps inner 15
+gaps outer 17
 
 set $mod Mod4
 
@@ -178,6 +178,7 @@ exec_always feh --bg-scale ~/Documents/Wallpaper.png
 exec polybar top
 exec dropbox start
 exec xset r rate 150 25
+exec redshift -l 33.7445:118.3870
 
 #Custom Keybinds   
 bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-5%'

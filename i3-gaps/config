@@ -166,12 +166,6 @@ client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-col
 client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #3f3f3f
 client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #3f3f3f
 
-#window borders and stuff
-hide_edge_borders both
-for_window [class="^.*"] border pixel 1
-new_window 1pixel
-
-
 #startup
 exec compton -f -c -D 5 -i 0.85 -r 15
 exec_always feh --bg-scale ~/Documents/Wallpaper.png
@@ -179,6 +173,11 @@ exec polybar top
 exec dropbox start
 exec xset r rate 150 25
 exec redshift -l 33.7445:118.3870
+
+#window borders and stuff
+hide_edge_borders both
+for_window [class="^.*"] border pixel 1
+new_window 1pixel
 
 #Custom Keybinds   
 bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-5%'

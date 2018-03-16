@@ -189,3 +189,6 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 bindsym $mod+Shift+f exec urxvt -e "ranger"
 bindsym $mod+Shift+b exec firefox 
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show

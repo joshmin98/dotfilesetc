@@ -3,9 +3,11 @@
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
+  (menu-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
 
   (global-set-key (kbd "<backtab>") 'forward-char)
+
 #+END_SRC
 * General Interface Extensions
 #+BEGIN_SRC emacs-lisp
@@ -92,6 +94,11 @@
   (use-package neotree
     :ensure t)
   (global-set-key [f8] 'neotree-toggle)
+
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook))
 #+END_SRC
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp
@@ -249,33 +256,27 @@ HTML and CSS
 #+END_SRC
 
 JAVASCRIPT
-xx#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package js2-mode
-    :ensure t)
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+    :mode ("\\.js\\'" . js2-mode)
+    :config
+    (use-package tern
+      :diminish tern-mode
+      :config    
+      (add-hook 'js2-mode-hook 'tern-mode)
+      (use-package company-tern
+        :config
+        (add-to-list 'company-backends 'company-tern))))
 
-  ;(use-package tern
-  ;  :ensure t)
-  ;  (add-hook 'js2-mode-hook 'tern-mode)
-  ;  (add-hook 'web-mode-hook 'tern-mode)
-  ;  (setq tern-command (append tern-command '("--no-port-file")))
-
-  (use-package company-tern
-    :ensure t)
-  (add-to-list 'company-backends 'company-tern)
-  (add-hook 'js2-mode-hook (lambda ()
-                             (tern-mode)
-                             (company-mode)))
   (use-package indium
     :ensure t)
 
   (use-package json-mode
     :ensure t)
-xx#+END_SRC
+#+END_SRC
 
 TYPESCRIPT
-xx#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package tide
     :ensure t)
   (defun setup-tide-mode ()
@@ -288,16 +289,16 @@ xx#+BEGIN_SRC emacs-lisp
     (company-mode 1))
   (add-hook 'before-save-hook 'tide-format-before-save)
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
-xx#+END_SRC
+#+END_SRC
 
 COFFEESCRIPT
-xx#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package coffee-mode
     :ensure t)
   (setq whitespace-action '(auto-cleanup))
   (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
   (custom-set-variables '(coffee-tab-width 2))
-xx#+END_SRC
+#+END_SRC
 * Rust Stuff
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode

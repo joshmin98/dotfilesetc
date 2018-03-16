@@ -7,9 +7,8 @@
   (fset 'yes-or-no-p 'y-or-n-p)
 
   (global-set-key (kbd "<backtab>") 'forward-char)
-
 #+END_SRC
-* General Interface Extensions
+* COMMENT General Interface Extensions
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
@@ -94,6 +93,20 @@
   (use-package neotree
     :ensure t)
   (global-set-key [f8] 'neotree-toggle)
+
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook))
+
+  (use-package highlight-parentheses
+    :ensure t)
+  (define-globalized-minor-mode global-highlight-parentheses-mode
+    highlight-parentheses-mode
+    (lambda ()
+      (highlight-parentheses-mode t)))
+  (global-highlight-parentheses-mode t)
+
 #+END_SRC
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp
@@ -263,6 +276,8 @@ JAVASCRIPT
         :config
         (add-to-list 'company-backends 'company-tern))))
 
+  (setq js-indent-level 2)
+
   (use-package indium
     :ensure t)
 
@@ -347,4 +362,11 @@ Evil Mode
     :ensure t)
   (setq py-autopep8-options '("--max-line-length=80"))
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+#+END_SRC
+* Lua
+#+BEGIN_SRC emacs-lisp
+  (use-package lua-mode
+    :ensure t)
+  (use-package company-lua
+    :ensure t)
 #+END_SRC

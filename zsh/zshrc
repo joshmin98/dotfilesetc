@@ -55,7 +55,7 @@ ZSH_THEME="norm"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions)
+plugins=(git zsh-autosuggestions vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -91,7 +91,12 @@ source $ZSH/oh-my-zsh.sh
 export PATH="$HOME/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin:$PATH"
 export PATH="/home/joshmin/anaconda3/bin:$PATH"
 export PATH="/home/joshmin/Downloads/solidity/build/solc:$PATH"
+export PATH="/home/joshmin/Documents/nim-0.18.0/bin:$PATH"
+export PATH="/home/joshmin/eclipse/java-photon/eclipse:$PATH"
+export PATH="/opt/apache-maven-3.5.4/bin:$PATH"
 
+export JAVA_HOME="/usr/lib/jvm/openjdk-1.8.0_202"
+export PATH="$JAVA_HOME/bin:$PATH"
 export EDITOR='emacsclient -t -c -a "emacs -nw"'
 export CARGO_HOME=$HOME/.cargo
 
@@ -105,6 +110,7 @@ alias browser='cd ~/Downloads/firefox && ./firefox-bin'
 alias clear='clear && neofetch --disable gpu'
 alias skype='flatpak run com.skype.Client'
 alias spotify='flatpak run com.spotify.Client'
+alias dfgame='~/Documents/df/startlnp'
 
 ###########################
 #       AUTOSTART         #

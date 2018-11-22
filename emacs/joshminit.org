@@ -58,17 +58,17 @@
   (use-package tablist
     :ensure t)
 
-  (use-package powerline
+  (use-package doom-modeline
     :ensure t
-    :config
-    (powerline-center-evil-theme))
+    :defer t
+    :hook (after-init . doom-modeline-init))
 
   (use-package magit
     :ensure t)
 
   (use-package nlinum
     :ensure t)
-  (setq nlinum-format "%3d\u2595  ")
+  (setq nlinum-format "%d │")
   (setq nlinum-highlight-current-line t)
   (global-nlinum-mode t)
 
@@ -106,6 +106,19 @@
     (lambda ()
       (highlight-parentheses-mode t)))
   (global-highlight-parentheses-mode t)
+
+  (use-package pretty-mode
+    :ensure t
+    :config
+    (global-pretty-mode t))
+
+  (use-package indent-guide
+    :ensure t)
+  (indent-guide-global-mode)
+
+  (use-package dimmer
+    :ensure t)
+  (dimmer-mode)
 #+END_SRC
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp
@@ -166,6 +179,12 @@ Auto-completion
       (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
       ))
 
+  (eval-after-load 'company
+    '(progn
+       (define-key company-active-map (kbd "TAB") 'company-select-next)
+       (define-key company-active-map [tab] 'company-select-next)))
+
+
   (use-package irony
     :ensure t
     :config
@@ -211,11 +230,11 @@ Syntax Checking
   (add-hook 'c-mode-hook 'flycheck-mode)
   (add-hook 'c++-mode-hook 'flycheck-mode)
 
-  (use-package flycheck-rtags
-    :ensure t)
-  (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags))
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+  ;; (use-package flycheck-rtags
+  ;;   :ensure t)
+  ;; (defun my-flycheck-rtags-setup ()
+  ;;   (flycheck-select-checker 'rtags))
+  ;; (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
 
   (use-package clang-format
     :ensure t)
@@ -232,7 +251,7 @@ CMake IDE
 #+END_SRC
 * Org Mode Stuff
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
+(use-package org-bullets
     :ensure t
     :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   (use-package ox-twbs
@@ -273,18 +292,18 @@ JAVASCRIPT
       :config    
       (add-hook 'js2-mode-hook 'tern-mode)
       (use-package company-tern
-        :config
-        (add-to-list 'company-backends 'company-tern))))
+	:config
+	(add-to-list 'company-backends 'company-tern))))
 
   (setq flycheck-eslintrc "~/.eslintrc")
 
   (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)))
+		(append flycheck-disabled-checkers
+			'(javascript-jshint)))
 
   (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(json-jsonlint)))
+		(append flycheck-disabled-checkers
+			'(json-jsonlint)))
 
   (add-hook 'js2-mode-hook 'flycheck-mode)
 
@@ -297,10 +316,11 @@ JAVASCRIPT
   (use-package json-mode
     :ensure t)
   (add-hook 'json-mode-hook
-            (lambda ()
-              (make-local-variable 'js-indent-level)
-              (setq js-indent-level 2)))
+	    (lambda ()
+	      (make-local-variable 'js-indent-level)
+	      (setq js-indent-level 2)))
 
+  (setq js-indent-level 2)
 #+END_SRC
 
 TYPESCRIPT
@@ -334,23 +354,7 @@ GRAPHQL
     :ensure t)
 #+END_SRC
 
-* Rust Stuff
-#+BEGIN_SRC emacs-lisp
-  (use-package rust-mode
-    :ensure t
-    :config
-    (setq rust-format-on-save t))
-
-  (use-package racer
-    :ensure t)
-
-  (use-package flymake-easy
-    :ensure t)
-  (use-package flymake-rust
-    :ensure t)
-#+END_SRC
 * Evil Mode
-Evil Mode
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :ensure t
@@ -367,10 +371,11 @@ Evil Mode
 * Python
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
-    :ensure t
-    :config
-    (setq elpy-rpc-python-command "python3"))
+    :ensure t)
+  (setq elpy-rpc-python-command "/home/joshmin/anaconda3/bin/python")
+  (setq python-shell-interpreter "/home/joshmin/anaconda3/bin/python")
   (elpy-enable)
+
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode)
 
@@ -388,28 +393,42 @@ Evil Mode
   (setq py-autopep8-options '("--max-line-length=80"))
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 #+END_SRC
-* Lua
+* Nim
 #+BEGIN_SRC emacs-lisp
-  (use-package lua-mode
+  (use-package nim-mode
     :ensure t)
-  (use-package company-lua
-    :ensure t)
+  (setq nimsuggest-path "~/Documents/nim-0.18.0/bin/nimsuggest")
+  (add-hook 'nimsuggest-mode-hook 'company-mode)
 #+END_SRC
-* OCaml
+* Java
 #+BEGIN_SRC emacs-lisp
-  (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-    (when (and opam-share (file-directory-p opam-share))
-      ;; Register Merlin
-      (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-      (autoload 'merlin-mode "merlin" nil t nil)
-      ;; Automatically start it in OCaml buffers
-      (add-hook 'tuareg-mode-hook 'merlin-mode t)
-      (add-hook 'caml-mode-hook 'merlin-mode t)
-      ;; Use opam switch to lookup ocamlmerlin binary
-      (setq merlin-command 'opam)))
+  (require 'eclim)
+  (setq eclimd-autostart t)
+
+  (custom-set-variables
+   '(eclim-eclipse-dirs '("~/eclipse/java-photon/eclipse"))
+   '(eclim-executable "~/.p2/pool/plugins/org.eclim_2.8.0/bin/eclim"))
+
+  (defun my-java-mode-hook ()
+    (eclim-mode t))
+
+  (require 'company-emacs-eclim)
+  (company-emacs-eclim-setup)
+
+  (add-hook 'java-mode-hook 'my-java-mode-hook)
 #+END_SRC
-* Solidity
+* Elm
+  #+BEGIN_SRC emacs-lisp
+    (require 'elm-mode)
+    (add-to-list 'company-backends 'company-elm)
+    (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+  #+END_SRC
+* Set env vars
 #+BEGIN_SRC emacs-lisp
-  (use-package solidity-mode
-    :ensure t)
+  (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+    (setenv "PATH" path)
+    (setq exec-path 
+	  (append
+	   (split-string-and-unquote path ":")
+	   exec-path)))
 #+END_SRC

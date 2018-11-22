@@ -176,7 +176,7 @@ exec redshift -l 33.7445:118.3870
 
 #window borders and stuff
 hide_edge_borders both
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 0
 new_window 1pixel
 
 #Custom Keybinds   

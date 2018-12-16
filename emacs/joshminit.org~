@@ -292,23 +292,29 @@ JAVASCRIPT
       :config    
       (add-hook 'js2-mode-hook 'tern-mode)
       (use-package company-tern
-        :config
-        (add-to-list 'company-backends 'company-tern))))
+	:config
+	(add-to-list 'company-backends 'company-tern))))
 
   (setq flycheck-eslintrc "~/.eslintrc")
 
   (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)))
+		(append flycheck-disabled-checkers
+			'(javascript-jshint)))
 
   (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(json-jsonlint)))
+		(append flycheck-disabled-checkers
+			'(json-jsonlint)))
 
   (add-hook 'js2-mode-hook 'flycheck-mode)
 
   (use-package web-mode
     :ensure t)
+
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2)
+  )
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
 
   (use-package indium
     :ensure t)
@@ -316,10 +322,11 @@ JAVASCRIPT
   (use-package json-mode
     :ensure t)
   (add-hook 'json-mode-hook
-            (lambda ()
-              (make-local-variable 'js-indent-level)
-              (setq js-indent-level 2)))
+	    (lambda ()
+	      (make-local-variable 'js-indent-level)
+	      (setq js-indent-level 2)))
 
+  (setq js-indent-level 2)
 #+END_SRC
 
 TYPESCRIPT
@@ -418,9 +425,9 @@ GRAPHQL
 #+END_SRC
 * Elm
   #+BEGIN_SRC emacs-lisp
-    (use-package elm-mode
-      :ensure t)
+    (require 'elm-mode)
     (add-to-list 'company-backends 'company-elm)
+    (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
   #+END_SRC
 * Set env vars
 #+BEGIN_SRC emacs-lisp
@@ -430,4 +437,5 @@ GRAPHQL
 	  (append
 	   (split-string-and-unquote path ":")
 	   exec-path)))
+  (setenv "JAVA_HOME" "/usr/lib/jvm/openjdk-1.8.0_202")
 #+END_SRC

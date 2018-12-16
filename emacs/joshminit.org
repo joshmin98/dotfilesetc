@@ -297,18 +297,24 @@ JAVASCRIPT
 
   (setq flycheck-eslintrc "~/.eslintrc")
 
-  (setq-default flycheck-disabled-checkers
-		(append flycheck-disabled-checkers
-			'(javascript-jshint)))
+  ;; (setq-default flycheck-disabled-checkers
+  ;; 	      (append flycheck-disabled-checkers
+  ;; 		      '(javascript-jshint)))
 
-  (setq-default flycheck-disabled-checkers
-		(append flycheck-disabled-checkers
-			'(json-jsonlint)))
+  ;; (setq-default flycheck-disabled-checkers
+  ;; 	      (append flycheck-disabled-checkers
+  ;; 		      '(json-jsonlint)))
 
-  (add-hook 'js2-mode-hook 'flycheck-mode)
+  ;; (add-hook 'js2-mode-hook 'flycheck-mode)
 
   (use-package web-mode
     :ensure t)
+
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2)
+  )
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
 
   (use-package indium
     :ensure t)
@@ -321,6 +327,11 @@ JAVASCRIPT
 	      (setq js-indent-level 2)))
 
   (setq js-indent-level 2)
+
+  (use-package prettier-js
+    :ensure t)
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook 'prettier-js-mode)
 #+END_SRC
 
 TYPESCRIPT
@@ -431,4 +442,5 @@ GRAPHQL
 	  (append
 	   (split-string-and-unquote path ":")
 	   exec-path)))
+  (setenv "JAVA_HOME" "/usr/lib/jvm/openjdk-1.8.0_202")
 #+END_SRC

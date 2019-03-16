@@ -94,11 +94,19 @@ export PATH="/home/joshmin/Downloads/solidity/build/solc:$PATH"
 export PATH="/home/joshmin/Documents/nim-0.18.0/bin:$PATH"
 export PATH="/home/joshmin/eclipse/java-photon/eclipse:$PATH"
 export PATH="/opt/apache-maven-3.5.4/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/bin/scala-2.12.8/bin:$PATH"
+export PATH="$HOME/bin/sbt/bin:$PATH"
+export PATH="$HOME/Documents/flutter/bin:$PATH"
 
+
+export SCALA_HOME="$HOME/bin/scala-2.12.8"
 export JAVA_HOME="/usr/lib/jvm/openjdk-1.8.0_202"
 export PATH="$JAVA_HOME/bin:$PATH"
-export EDITOR='emacsclient -t -c -a "emacs -nw"'
+export EDITOR='emacs'
 export CARGO_HOME=$HOME/.cargo
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export GOPATH="$HOME/go"
 
 ###########################
 #     ALIAS/SYMLINKS      #
@@ -119,4 +127,4 @@ alias dfgame='~/Documents/df/startlnp'
 neofetch --disable gpu
 
 # OPAM configuration
-. /home/joshmin/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+# . /home/joshmin/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

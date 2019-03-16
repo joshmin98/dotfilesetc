@@ -285,7 +285,6 @@ JAVASCRIPT
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
     :ensure t
-    :mode ("\\.js\\'" . js2-mode)
     :config
     (use-package tern
       :diminish tern-mode
@@ -299,18 +298,8 @@ JAVASCRIPT
 
   (setq js2-strict-missing-semi-warning nil)
 
-
-  ;; (setq-default flycheck-disabled-checkers
-  ;; 	      (append flycheck-disabled-checkers
-  ;; 		      '(javascript-jshint)))
-
-  ;; (setq-default flycheck-disabled-checkers
-  ;; 	      (append flycheck-disabled-checkers
-  ;; 		      '(json-jsonlint)))
-
-  ;; (add-hook 'js2-mode-hook 'flycheck-mode)
-
   (use-package rjsx-mode
+    :mode ("\\.js\\'" . rjsx-mode)
     :ensure t)
   (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("pages\\/.*\\.js\\'" . rjsx-mode))
@@ -340,6 +329,42 @@ JAVASCRIPT
     :ensure t)
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
+
+  (use-package tide
+    :ensure t
+    :after (typescript-mode company flycheck)
+    :hook ((typescript-mode . tide-setup)
+	   (typescript-mode . tide-hl-identifier-mode)
+	   (before-save . tide-format-before-save)))
+
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+  (require 'web-mode)
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
+		(setup-tide-mode))))
+  ;; enable typescript-tslint checker
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
 #+END_SRC
 * Evil Mode
 #+BEGIN_SRC emacs-lisp
@@ -404,12 +429,38 @@ JAVASCRIPT
 
   (add-hook 'java-mode-hook 'my-java-mode-hook)
 #+END_SRC
-* Elm
+* Rust
   #+BEGIN_SRC emacs-lisp
-    (require 'elm-mode)
-    (add-to-list 'company-backends 'company-elm)
-    (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+    (use-package cargo
+      :ensure t)
+    (add-hook 'rust-mode-hook 'cargo-minor-mode)
+
+    (use-package rust-mode
+	:mode "\\.rs\\'"
+	:init
+	(setq rust-format-on-save t))
+    (use-package lsp-mode
+	:init
+	(add-hook 'prog-mode-hook 'lsp-mode)
+	:config
+	(use-package lsp-flycheck
+	    :ensure f ; comes with lsp-mode
+	    :after flycheck))
+	    (use-package lsp-rust
+	:after lsp-mode)
   #+END_SRC
+  
+* Crystal
+#+BEGIN_SRC emacs-lisp
+  (use-package crystal-mode
+    :ensure t)
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "scry")
+		    :major-modes '(crystal-mode)
+		    :server-id 'scry))
+
+#+END_SRC
 * Set env vars
 #+BEGIN_SRC emacs-lisp
   (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
@@ -420,3 +471,19 @@ JAVASCRIPT
 	   exec-path)))
   (setenv "JAVA_HOME" "/usr/lib/jvm/openjdk-1.8.0_202")
 #+END_SRC
+* etc
+  #+BEGIN_SRC emacs-lisp
+    (setq markdown-command "/usr/bin/pandoc")
+
+    (defun rust-pretty-symbols ()
+      (setq prettify-symbols-alist
+	    '(
+	      ("fn" . 955)
+	      ("->" . 8594)
+	      ("=>" . 8658)
+	      )))
+
+    (add-hook 'rust-mode-hook 'rust-pretty-symbols)
+    (global-prettify-symbols-mode 1)
+  #+END_SRC
+  

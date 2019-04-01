@@ -101,7 +101,7 @@ export PATH="$HOME/Documents/flutter/bin:$PATH"
 
 
 export SCALA_HOME="$HOME/bin/scala-2.12.8"
-export JAVA_HOME="/usr/lib/jvm/openjdk-1.8.0_202"
+export JAVA_HOME="/usr/lib/jvm/jdk1.8.0_202"
 export PATH="$JAVA_HOME/bin:$PATH"
 export EDITOR='emacs'
 export CARGO_HOME=$HOME/.cargo

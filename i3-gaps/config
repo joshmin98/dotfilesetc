@@ -157,7 +157,7 @@ set $inactive-text-color #818181
 set $urgent-bg-color     #E53935
 
 #rofi
-bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 465 -opacity "75" -bw 0 -font "Padauk 25"
+bindsym $mod+d exec rofi -show drun -lines 3 -eh 2 -width 100 -padding 465 -opacity "75" -bw 0 -font "Padauk 25"
 
 # window colors
 #                       border              background         text                 indicator

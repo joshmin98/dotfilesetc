@@ -18,7 +18,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(coffee-tab-width 2)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-enabled-themes (quote (zenburn1)))
@@ -35,12 +34,14 @@
  '(jdee-db-active-breakpoint-face-colors (cons "#191C25" "#80A0C2"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#191C25" "#A2BF8A"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#191C25" "#434C5E"))
+ '(lsp-ui-doc-enable nil)
+ '(lsp-ui-sideline-enable nil)
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (react-snippets crystal-mode lsp-ui evil-collection nasm-mode company-lsp lsp-ruby lsp-rust yasnippet-snippets ensime scala-mode mmm-mode company-racer elm-yasnippets abl-mode elm-mode handlebars-mode ember-mode 2048-game volatile-highlights dimmer highlight-symbol highlight-thing speed-type exec-path-from-shell arjen-grey-theme evil-magit meghanada cl-lib doom-modeline doom-themes noflet nord-theme solidity-mode aggressive-indent merlin quelpa quelpa-use-package js-format web-mode highlight-parentheses company-lua lua-mode dashboard coffee-mode json-mode django-manage django-mode django-snippets py-autopep8 company-jedi jedi-core elpy jedi indium rainbow-delimiters nlinum-hl org-evil tide google-this ag xref-js2 js2-refactor evil-org avy spaceline telephone-line ggtags evil-easymotion sublimity zenburn-theme yasnippet which-key vue-mode use-package tablist smartparens skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style glsl-mode flymake-rust flycheck-rust evil-tutor emmet-mode counsel company-tern company-irony-c-headers company-irony company-c-headers android-mode)))
+    (paredit cider lsp-java smooth-scroll react-snippets crystal-mode lsp-ui evil-collection nasm-mode company-lsp lsp-ruby lsp-rust yasnippet-snippets ensime scala-mode mmm-mode company-racer elm-yasnippets abl-mode elm-mode handlebars-mode ember-mode 2048-game volatile-highlights dimmer highlight-symbol highlight-thing speed-type exec-path-from-shell arjen-grey-theme evil-magit meghanada cl-lib doom-modeline doom-themes noflet nord-theme solidity-mode aggressive-indent merlin quelpa quelpa-use-package js-format web-mode highlight-parentheses company-lua lua-mode dashboard coffee-mode json-mode django-manage django-mode django-snippets py-autopep8 company-jedi jedi-core elpy jedi indium rainbow-delimiters nlinum-hl org-evil tide google-this ag xref-js2 js2-refactor evil-org avy spaceline telephone-line ggtags evil-easymotion sublimity zenburn-theme yasnippet which-key vue-mode use-package tablist smartparens skewer-mode rjsx-mode ranger racer projectile powerline ox-twbs org-bullets nlinum neotree magit intero iedit google-c-style glsl-mode flymake-rust flycheck-rust evil-tutor emmet-mode counsel company-tern company-irony-c-headers company-irony company-c-headers android-mode)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(python-shell-interpreter "python3")
  '(vc-annotate-background "#2B2B2B")
@@ -71,6 +72,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro for Powerline" :foundry "ADBO" :slant normal :weight normal :height 113 :width normal)))))
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line

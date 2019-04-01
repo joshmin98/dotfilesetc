@@ -2,11 +2,16 @@
 * Interface Tweaks
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
+  (setq warning-minimum-level :emergency)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
 
   (global-set-key (kbd "<backtab>") 'forward-char)
+
+  (setq scroll-step 1)
+  (setq scroll-conservatively 10000)
+  (setq auto-window-vscroll nil)
 #+END_SRC
 * General Interface Extensions
 #+BEGIN_SRC emacs-lisp
@@ -93,11 +98,17 @@
   (use-package neotree
     :ensure t)
   (global-set-key [f8] 'neotree-toggle)
+  (add-hook 'neotree-mode-hook (lambda () (nlinum-mode 0)))
 
   (use-package dashboard
     :ensure t
     :config
     (dashboard-setup-startup-hook))
+  (add-hook 'dashboard-mode-hook (lambda () (nlinum-mode 0)))
+  (setq dashboard-items '(
+			  (recents . 5)
+			  (projects . 5)
+			  ))
 
   (use-package highlight-parentheses
     :ensure t)
@@ -273,14 +284,6 @@ CMake IDE
 
 #+END_SRC
 * Web Stuff
-HTML and CSS
-#+BEGIN_SRC emacs-lisp
-  (use-package emmet-mode
-    :ensure t)
-  (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook  'emmet-mode)
-#+END_SRC
-
 JAVASCRIPT
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
@@ -293,6 +296,8 @@ JAVASCRIPT
       (use-package company-tern
 	:config
 	(add-to-list 'company-backends 'company-tern))))
+
+  (setq js-indent-level 2)
 
   (setq flycheck-eslintrc "~/.eslintrc")
 
@@ -307,11 +312,12 @@ JAVASCRIPT
   (use-package web-mode
     :ensure t)
 
-  (defun my-web-mode-hook ()
-    "Hooks for Web mode."
-    (setq web-mode-markup-indent-offset 2)
-  )
-  (add-hook 'web-mode-hook  'my-web-mode-hook)
+  (use-package emmet-mode
+    :ensure t)
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook  'emmet-mode)
+  (add-hook 'web-mode-hook 'emmet-mode)
+
 
   (use-package indium
     :ensure t)
@@ -323,10 +329,15 @@ JAVASCRIPT
 	      (make-local-variable 'js-indent-level)
 	      (setq js-indent-level 2)))
 
-  (setq js-indent-level 2)
-
   (use-package prettier-js
     :ensure t)
+  (setq prettier-js-args '(
+			   "--trailing-comma" "all"
+			   "--print-width" "80"
+			   "--single-quote" "true"
+			   "--tab-width" "2"
+			   ))
+
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode)
 
@@ -353,6 +364,7 @@ JAVASCRIPT
   (setq company-tooltip-align-annotations t)
 
   ;; formats the buffer before saving
+  (setq typescript-indent-level 2)
   (add-hook 'before-save-hook 'tide-format-before-save)
 
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
@@ -363,6 +375,13 @@ JAVASCRIPT
 	    (lambda ()
 	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
 		(setup-tide-mode))))
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (electric-indent-mode -1)
+    )
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
   ;; enable typescript-tslint checker
   (flycheck-add-mode 'typescript-tslint 'web-mode)
 #+END_SRC
@@ -414,20 +433,25 @@ JAVASCRIPT
 #+END_SRC
 * Java
 #+BEGIN_SRC emacs-lisp
-  (require 'eclim)
-  (setq eclimd-autostart t)
+  ;; (require 'eclim)
+  ;; (setq eclimd-autostart t)
 
-  (custom-set-variables
-   '(eclim-eclipse-dirs '("~/eclipse/java-photon/eclipse"))
-   '(eclim-executable "~/.p2/pool/plugins/org.eclim_2.8.0/bin/eclim"))
+  ;; (custom-set-variables
+  ;;  '(eclim-eclipse-dirs '("~/eclipse/java-photon/eclipse"))
+  ;;  '(eclim-executable "~/.p2/pool/plugins/org.eclim_2.8.0/bin/eclim"))
 
-  (defun my-java-mode-hook ()
-    (eclim-mode t))
+  ;; (defun my-java-mode-hook ()
+  ;;   (eclim-mode t))
 
-  (require 'company-emacs-eclim)
-  (company-emacs-eclim-setup)
+  ;; (require 'company-emacs-eclim)
+  ;; (company-emacs-eclim-setup)
 
-  (add-hook 'java-mode-hook 'my-java-mode-hook)
+  ;; (add-hook 'java-mode-hook 'my-java-mode-hook)
+
+  (use-package lsp-java)
+  (require 'lsp-java)
+  (setq lsp-java-server-install-dir "~/Documents/jdt-ls/org.eclipse.jdt.ls.product/target/repository")
+  (add-hook 'java-mode-hook #'lsp)
 #+END_SRC
 * Rust
   #+BEGIN_SRC emacs-lisp
@@ -436,30 +460,31 @@ JAVASCRIPT
     (add-hook 'rust-mode-hook 'cargo-minor-mode)
 
     (use-package rust-mode
-	:mode "\\.rs\\'"
-	:init
-	(setq rust-format-on-save t))
+      :mode "\\.rs\\'"
+      :init
+      (setq rust-format-on-save t))
     (use-package lsp-mode
-	:init
-	(add-hook 'prog-mode-hook 'lsp-mode)
-	:config
-	(use-package lsp-flycheck
-	    :ensure f ; comes with lsp-mode
-	    :after flycheck))
-	    (use-package lsp-rust
-	:after lsp-mode)
+      :init
+      (add-hook 'prog-mode-hook 'lsp-mode)
+      :config
+      (use-package lsp-flycheck
+	:ensure f ; comes with lsp-mode
+	:after flycheck))
   #+END_SRC
   
-* Crystal
+* Clojure
 #+BEGIN_SRC emacs-lisp
-  (use-package crystal-mode
+  (use-package cider
     :ensure t)
-
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection "scry")
-		    :major-modes '(crystal-mode)
-		    :server-id 'scry))
-
+  (use-package paredit
+    :ensure t)
+  (add-hook 'clojure-mode-hook
+     '(lambda ()
+	(paredit-mode 1)))
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'company-mode)
+  (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+  (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 #+END_SRC
 * Set env vars
 #+BEGIN_SRC emacs-lisp
@@ -485,5 +510,29 @@ JAVASCRIPT
 
     (add-hook 'rust-mode-hook 'rust-pretty-symbols)
     (global-prettify-symbols-mode 1)
+
+    (set-face-attribute 'default nil
+			:font "Source Sans Pro"
+			:weight 'normal
+			:width 'normal
+			:height 140)
+
+    (use-package projectile
+      :ensure t
+      :config
+      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+      (projectile-mode +1))
+    (setq projectile-project-search-path '("~/Development/"
+					   "~/Development/CSCI353/"
+					   "~/Development/CSCI356/"
+					   ))
+    (use-package counsel-projectile
+      :ensure t)
+    (counsel-projectile-mode t)
+
+    (use-package evil-magit
+      :ensure t)
   #+END_SRC
+  
   

@@ -128,3 +128,6 @@ neofetch --disable gpu
 
 # OPAM configuration
 # . /home/joshmin/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# added by travis gem
+[ -f /home/joshmin/.travis/travis.sh ] && source /home/joshmin/.travis/travis.sh

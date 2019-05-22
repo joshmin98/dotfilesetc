@@ -79,7 +79,6 @@
 
   (use-package nlinum-hl
     :ensure t)
-  (require 'nlinum-hl)
   (add-hook 'post-gc-hook #'nlinum-hl-flush-all-windows)
 
   (use-package smartparens
@@ -134,8 +133,6 @@
 * C++ Stuff
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-  (require 'cc-mode)
-  (require 'semantic)
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1)
   (semantic-mode 1)
@@ -150,9 +147,17 @@
   (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
   (use-package yasnippet
-    :ensure t)
-  (require 'yasnippet)
-  (yas-global-mode 1)
+    :ensure t
+    :config
+    (validate-setq
+     yas-verbosity 1
+     yas-wrap-around-region t)
+
+    (with-eval-after-load 'yasnippet
+      (validate-setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+
+    (yas-reload-all)
+    (yas-global-mode))
 
   (use-package yasnippet-snippets
     :ensure t)
@@ -176,6 +181,12 @@
   (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
 
   (use-package cmake-mode
+    :ensure t)
+
+  (use-package flymake
+    :ensure t)
+
+  (use-package flycheck
     :ensure t)
 #+END_SRC
 
@@ -369,7 +380,6 @@ JAVASCRIPT
 
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
-  (require 'web-mode)
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-hook 'web-mode-hook
 	    (lambda ()
@@ -433,23 +443,8 @@ JAVASCRIPT
 #+END_SRC
 * Java
 #+BEGIN_SRC emacs-lisp
-  ;; (require 'eclim)
-  ;; (setq eclimd-autostart t)
-
-  ;; (custom-set-variables
-  ;;  '(eclim-eclipse-dirs '("~/eclipse/java-photon/eclipse"))
-  ;;  '(eclim-executable "~/.p2/pool/plugins/org.eclim_2.8.0/bin/eclim"))
-
-  ;; (defun my-java-mode-hook ()
-  ;;   (eclim-mode t))
-
-  ;; (require 'company-emacs-eclim)
-  ;; (company-emacs-eclim-setup)
-
-  ;; (add-hook 'java-mode-hook 'my-java-mode-hook)
-
-  (use-package lsp-java)
-  (require 'lsp-java)
+  (use-package lsp-java
+    :ensure t)
   (setq lsp-java-server-install-dir "~/Documents/jdt-ls/org.eclipse.jdt.ls.product/target/repository")
   (add-hook 'java-mode-hook #'lsp)
 #+END_SRC

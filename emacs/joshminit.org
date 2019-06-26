@@ -469,13 +469,20 @@ JAVASCRIPT
   
 * Clojure
 #+BEGIN_SRC emacs-lisp
+  (use-package clj-refactor
+    :ensure t)
+  (use-package evil-cleverparens
+    :ensure t)
   (use-package cider
     :ensure t)
   (use-package paredit
     :ensure t)
   (add-hook 'clojure-mode-hook
      '(lambda ()
-	(paredit-mode 1)))
+	(evil-cleverparens-mode 1)
+	(clj-refactor-mode 1)
+	(yas-minor-mode 1)
+	(cljr-add-keybindings-with-prefix "C-c C-m")))
   (add-hook 'cider-repl-mode-hook #'company-mode)
   (add-hook 'cider-mode-hook #'company-mode)
   (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
